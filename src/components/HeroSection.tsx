@@ -167,8 +167,8 @@ export default function HeroSection() {
             metrics="Tiempo medio de respuesta: 1.2s · Resolución sin escalado: 87%"
           />
           <ChatMockup
-            title="Tempus Padel Club"
-            iconLetter="T"
+            title="Club de Pádel"
+            iconLetter="C"
             messages={padelMessages}
             metrics="Tiempo medio de respuesta: 1.4s · Resolución sin escalado: 92%"
           />
