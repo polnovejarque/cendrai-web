@@ -1,83 +1,52 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
-import { MousePointerClick, BarChart3, Megaphone, ArrowRight, CheckCircle2, TrendingUp, Users } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Link2, Zap, ShieldCheck } from 'lucide-react'
 
-// ── Datos de los agentes ──────────────────────────────────────────────────────
-const agents = [
+// ── Datos de la Infraestructura ────────────────────────────────────────────────
+const infrastructure = [
   {
-    id: 'rafa',
-    name: 'Rafa',
-    role: 'Ventas B2B',
-    icon: MousePointerClick,
+    id: 'integracion',
+    name: 'Integración',
+    role: 'Conexión nativa',
+    icon: Link2,
     color: 'from-cyan-500 to-blue-600',
+    title: 'Conexión nativa con tu ecosistema',
     description:
-      'Tu closer incansable. Rafa no solo responde, sino que busca, nutre y cierra oportunidades de negocio mientras tú duermes.',
+      'Cendrai no es un silo aislado. Se conecta a tus herramientas actuales para operar exactamente donde tu empresa ya trabaja.',
     pipeline: [
-      { step: '01', label: 'Captación de leads fríos',        desc: 'Identifica y contacta prospectos relevantes de forma autónoma.' },
-      { step: '02', label: 'Clasificación y scoring',          desc: 'Puntúa cada lead según su potencial de conversión.' },
-      { step: '03', label: 'Contacto inicial personalizado',   desc: 'Redacta y envía el primer mensaje adaptado al perfil del cliente.' },
-      { step: '04', label: 'Seguimiento constante',            desc: 'Mantiene la conversación activa sin que tengas que intervenir.' },
-      { step: '05', label: 'Agendado de reuniones',            desc: 'Reserva citas directamente en tu calendario.' },
+      { step: '01', label: 'Sincronización bidireccional', desc: 'Integración nativa con CRMs (HubSpot, Salesforce, Pipedrive).' },
+      { step: '02', label: 'Despliegue en canales',       desc: 'Operativa directa en WhatsApp, Slack y Microsoft Teams.' },
+      { step: '03', label: 'Conexión financiera',         desc: 'Enlace seguro con pasarelas de pago y ERPs (Stripe, Holded).' },
     ],
   },
   {
-    id: 'carol',
-    name: 'Carol',
-    role: 'Administración y Finanzas',
-    icon: BarChart3,
-    color: 'from-violet-500 to-indigo-600',
-    description:
-      'Orden absoluto en tu back-office. Carol automatiza el papeleo para que tú te centres en crecer.',
-    pipeline: [
-      { step: '01', label: 'Recepción de datos',                 desc: 'Recoge y valida los movimientos contables de todas las fuentes.' },
-      { step: '02', label: 'Creación de facturas',               desc: 'Genera y envía facturas correctas sin fricción.' },
-      { step: '03', label: 'Conciliación bancaria',              desc: 'Cruza extractos automáticamente y detecta anomalías.' },
-      { step: '04', label: 'Reportes financieros en tiempo real',desc: 'Dashboards actualizados siempre disponibles para la dirección.' },
-    ],
-  },
-  {
-    id: 'michael',
-    name: 'Michael',
-    role: 'Marketing & RRSS',
-    icon: Megaphone,
-    color: 'from-pink-500 to-rose-600',
-    description:
-      'Creación y distribución de contenido a escala. Michael planifica, genera y publica sin parar.',
-    pipeline: [
-      { step: '01', label: 'Análisis de tendencias',     desc: 'Detecta qué contenido funciona en tu sector y en tu audiencia.' },
-      { step: '02', label: 'Generación de copys',        desc: 'Redacta textos adaptados a cada canal y formato.' },
-      { step: '03', label: 'Programación multicanal',    desc: 'Agenda publicaciones en Instagram, LinkedIn, TikTok y más.' },
-      { step: '04', label: 'Optimización de campañas',   desc: 'Ajusta creatividades y presupuestos según el rendimiento.' },
-    ],
-  },
-  {
-    id: 'luna',
-    name: 'Luna',
-    role: 'Desarrollo de Negocio',
-    icon: TrendingUp,
-    color: 'from-emerald-500 to-teal-600',
-    description:
-      'Apertura de verticales de negocio y estrategias de expansión. Experta en detectar oportunidades corporativas.',
-    pipeline: [
-      { step: '01', label: 'Análisis de mercado',       desc: 'Detecta nuevos nichos y segmentos rentables automáticamente.' },
-      { step: '02', label: 'Prospección estratégica',   desc: 'Identifica y perfila grandes cuentas clave (Key Accounts).' },
-      { step: '03', label: 'Sincronización interna',    desc: 'Se alinea con marketing para empujar estrategias conjuntas.' },
-      { step: '04', label: 'Acercamiento de alto nivel',desc: 'Inicia conversaciones corporativas y precalifica oportunidades.' },
-    ],
-  },
-  {
-    id: 'lucia',
-    name: 'Lucía',
-    role: 'Recursos Humanos',
-    icon: Users,
+    id: 'rendimiento',
+    name: 'Rendimiento',
+    role: 'Ejecución continua',
+    icon: Zap,
     color: 'from-amber-500 to-orange-600',
+    title: 'Ejecución ininterrumpida sin latencia',
     description:
-      'Gestión integral de tu equipo físico. Lucía controla turnos, ausencias y resuelve dudas operativas al instante.',
+      'Operaciones continuas que absorben cualquier pico de demanda sin fatiga y sin errores humanos.',
     pipeline: [
-      { step: '01', label: 'Control de turnos',         desc: 'Organiza horarios basándose en disponibilidad y demanda.' },
-      { step: '02', label: 'Gestión de ausencias',      desc: 'Tramita bajas, vacaciones y permisos sin fricción.' },
-      { step: '03', label: 'Filtro de consultas',       desc: 'Resuelve el 80% de las dudas frecuentes del staff en segundos.' },
-      { step: '04', label: 'Cierre de nóminas',         desc: 'Centraliza horas extras e incidencias mensuales para la gestoría.' },
+      { step: '01', label: 'Respuesta en milisegundos',   desc: 'Interacción en tiempo real en cualquier canal de comunicación.' },
+      { step: '02', label: 'Escalabilidad dinámica',      desc: 'Infraestructura de servidores que se ajusta a la carga de trabajo.' },
+      { step: '03', label: 'Auto-recuperación',           desc: 'Manejo de errores y redundancia activa sin intervención manual.' },
+    ],
+  },
+  {
+    id: 'seguridad',
+    name: 'Seguridad',
+    role: 'Grado corporativo',
+    icon: ShieldCheck,
+    color: 'from-emerald-500 to-teal-600',
+    title: 'Tus datos operativos, blindados',
+    description:
+      'Arquitectura de máxima seguridad con control total sobre los permisos y la información que manejan los agentes.',
+    pipeline: [
+      { step: '01', label: 'Encriptación E2E',            desc: 'Protección de datos de extremo a extremo en tránsito y reposo.' },
+      { step: '02', label: 'Cumplimiento normativo',      desc: 'Adhesión estricta a RGPD y estándares de seguridad corporativa.' },
+      { step: '03', label: 'Registro de auditoría',       desc: 'Log completo de acciones y override manual para administradores.' },
     ],
   },
 ]
@@ -100,8 +69,8 @@ const stepVariants: Variants = {
 
 // ── Componente ────────────────────────────────────────────────────────────────
 export default function BentoFeatures() {
-  const [activeId, setActiveId] = useState('rafa')
-  const active = agents.find((a) => a.id === activeId)!
+  const [activeId, setActiveId] = useState('integracion')
+  const active = infrastructure.find((a) => a.id === activeId)!
 
   return (
     <section id="modulos" className="py-32">
@@ -119,11 +88,10 @@ export default function BentoFeatures() {
             Módulos Autónomos
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-slate-100 tracking-tight max-w-3xl mx-auto leading-tight mt-1">
-            Especialistas modulares para cada área.
+            Infraestructura diseñada para escalar.
           </h2>
           <p className="mt-5 text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            No necesitas cambiar todo tu equipo. Despliega al agente exacto para el
-            cuello de botella que frena tu negocio.
+            No es solo inteligencia. Es un motor de operaciones robusto, seguro y conectado directamente a las herramientas que ya utilizas.
           </p>
         </motion.div>
 
@@ -140,16 +108,16 @@ export default function BentoFeatures() {
           >
             {/* Label */}
             <p className="text-[10px] font-bold tracking-[0.18em] text-slate-500 uppercase mb-3 px-1">
-              Selecciona un agente
+              Capacidades
             </p>
 
-            {agents.map((agent) => {
-              const Icon = agent.icon
-              const isActive = agent.id === activeId
+            {infrastructure.map((item) => {
+              const Icon = item.icon
+              const isActive = item.id === activeId
               return (
                 <button
-                  key={agent.id}
-                  onClick={() => setActiveId(agent.id)}
+                  key={item.id}
+                  onClick={() => setActiveId(item.id)}
                   className={[
                     'group relative w-full flex items-center gap-4 px-5 py-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer select-none',
                     isActive
@@ -160,7 +128,7 @@ export default function BentoFeatures() {
                   {/* Active indicator */}
                   {isActive && (
                     <motion.div
-                      layoutId="agent-indicator"
+                      layoutId="infra-indicator"
                       className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 rounded-full bg-cyan-400"
                     />
                   )}
@@ -179,9 +147,9 @@ export default function BentoFeatures() {
                       'text-[14px] font-semibold leading-none tracking-tight transition-colors',
                       isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200',
                     ].join(' ')}>
-                      {agent.name}
+                      {item.name}
                     </p>
-                    <p className="text-[11px] text-slate-500 mt-1">{agent.role}</p>
+                    <p className="text-[11px] text-slate-500 mt-1">{item.role}</p>
                   </div>
 
                   {/* Chevron */}
@@ -224,7 +192,7 @@ export default function BentoFeatures() {
                 exit="exit"
                 className="p-8 md:p-10 flex flex-col gap-8"
               >
-                {/* Agent header */}
+                {/* Infra header */}
                 <div className="flex items-start gap-5">
                   <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${active.color} flex items-center justify-center shrink-0 shadow-lg`}>
                     <active.icon size={22} className="text-white" />
@@ -233,17 +201,17 @@ export default function BentoFeatures() {
                     <p className="text-[11px] font-bold tracking-[0.18em] text-cyan-400 uppercase mb-1">
                       {active.role}
                     </p>
-                    <h3 className="text-2xl font-bold text-white tracking-tight">{active.name}</h3>
+                    <h3 className="text-2xl font-bold text-white tracking-tight">{active.title}</h3>
                     <p className="text-sm text-slate-400 mt-2 leading-relaxed max-w-lg">
                       {active.description}
                     </p>
                   </div>
                 </div>
 
-                {/* Pipeline */}
+                {/* Pipeline / Features */}
                 <div>
                   <p className="text-[10px] font-bold tracking-[0.18em] text-slate-500 uppercase mb-5">
-                    Pipeline de trabajo
+                    Características clave
                   </p>
 
                   <div className="flex flex-col gap-3">
@@ -264,7 +232,6 @@ export default function BentoFeatures() {
                         {/* Content */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-[10px] font-mono text-cyan-400/60">{item.step}</span>
                             <span className="text-[14px] font-semibold text-slate-100 leading-none">{item.label}</span>
                           </div>
                           <p className="text-[12px] text-slate-400 mt-1 leading-relaxed">{item.desc}</p>
@@ -272,14 +239,6 @@ export default function BentoFeatures() {
                       </motion.div>
                     ))}
                   </div>
-                </div>
-
-                {/* Footer badge */}
-                <div className="flex items-center gap-2 pt-2 border-t border-white/[0.05]">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[11px] text-slate-500">
-                    Despliegue e integración en <span className="text-white font-medium">menos de 48h</span>.
-                  </span>
                 </div>
               </motion.div>
             </AnimatePresence>
