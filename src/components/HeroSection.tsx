@@ -1,4 +1,5 @@
-import { motion, type Variants } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useInView, type Variants } from 'framer-motion'
 import { ArrowRight, CheckCheck } from 'lucide-react'
 
 // ── Coreografía maestra ──
@@ -21,14 +22,29 @@ const fadeUp: Variants = {
 
 const integrations = ['HubSpot', 'Salesforce', 'Zoho', 'WhatsApp', 'Gmail']
 
-const messages = [
+// ── Chat data ──────────────────────────────────────────────────────────────────
+
+type Msg = { from: 'customer' | 'agent'; text: string; delay: number }
+
+const pizzeriaMessages: Msg[] = [
   { from: 'customer', text: 'Hola, quería hacer un pedido para esta noche', delay: 0.4 },
-  { from: 'agent', text: '¡Hola! Por supuesto. ¿Qué te apetece?', delay: 1.4 },
-  { from: 'customer', text: 'Una pizza margarita y dos refrescos', delay: 2.6 },
-  { from: 'agent', text: 'Perfecto. Son 14,50€. ¿Para recoger o entrega?', delay: 3.7 },
-  { from: 'customer', text: 'Entrega, calle Mayor 23', delay: 4.9 },
-  { from: 'agent', text: 'Confirmado. Llega en 30 min. Te aviso cuando salga del horno', delay: 6.1 },
-] as const
+  { from: 'agent',    text: '¡Hola! Por supuesto. ¿Qué te apetece?',        delay: 1.4 },
+  { from: 'customer', text: 'Una pizza margarita y dos refrescos',           delay: 2.6 },
+  { from: 'agent',    text: 'Perfecto. Son 14,50€. ¿Para recoger o entrega?', delay: 3.7 },
+  { from: 'customer', text: 'Entrega, calle Mayor 23',                       delay: 4.9 },
+  { from: 'agent',    text: 'Confirmado. Llega en 30 min. Te aviso cuando salga del horno', delay: 6.1 },
+]
+
+const padelMessages: Msg[] = [
+  { from: 'customer', text: 'Hola, ¿tenéis pista libre a las 19:00?',                              delay: 0.4 },
+  { from: 'agent',    text: '¡Hola! Déjame revisar... Sí, la pista 4 (panorámica) está libre.',    delay: 1.5 },
+  { from: 'customer', text: 'Perfecto, ¿cuánto es la hora?',                                       delay: 2.8 },
+  { from: 'agent',    text: 'Son 12€/hora por persona. ¿Te la reservo?',                           delay: 3.8 },
+  { from: 'customer', text: 'Sí, genial. ¿Y tenéis palas de alquiler?',                            delay: 5.1 },
+  { from: 'agent',    text: '¡Claro! Te añado 2 palas Bullpadel Pro por 5€. Reserva confirmada.', delay: 6.2 },
+]
+
+// ── Section ────────────────────────────────────────────────────────────────────
 
 export default function HeroSection() {
   return (
@@ -137,15 +153,25 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
 
-        {/* Chat mockup — demostración de producto */}
+        {/* ── Two chat mockups side by side ── */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto mt-24 max-w-sm sm:max-w-md"
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-auto mt-24 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2"
         >
-          <ChatMockup />
+          <ChatMockup
+            title="Pizzería Centro"
+            iconLetter="P"
+            messages={pizzeriaMessages}
+            metrics="Tiempo medio de respuesta: 1.2s · Resolución sin escalado: 87%"
+          />
+          <ChatMockup
+            title="Tempus Padel Club"
+            iconLetter="T"
+            messages={padelMessages}
+            metrics="Tiempo medio de respuesta: 1.4s · Resolución sin escalado: 92%"
+          />
         </motion.div>
       </div>
 
@@ -155,9 +181,22 @@ export default function HeroSection() {
   )
 }
 
-function ChatMockup() {
+// ── ChatMockup ─────────────────────────────────────────────────────────────────
+
+interface ChatMockupProps {
+  title: string
+  iconLetter: string
+  messages: Msg[]
+  metrics: string
+}
+
+function ChatMockup({ title, iconLetter, messages, metrics }: ChatMockupProps) {
+  // Trigger animations when card enters viewport
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, amount: 0.15 })
+
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       {/* Outer glow */}
       <div className="absolute -inset-6 rounded-3xl bg-cyan-200/20 blur-2xl" aria-hidden="true" />
 
@@ -165,10 +204,10 @@ function ChatMockup() {
         {/* Header */}
         <div className="flex items-center gap-3 border-b border-border bg-navy-700/50 px-4 py-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-cyan-200 to-cyan-400 text-sm font-semibold text-slate-950">
-            P
+            {iconLetter}
           </div>
           <div className="flex-1 text-left">
-            <p className="text-sm font-medium text-foreground">Pizzería Centro</p>
+            <p className="text-sm font-medium text-foreground">{title}</p>
             <p className="flex items-center gap-1.5 font-mono text-[10px] text-cyan-200">
               <span className="inline-block h-1.5 w-1.5 animate-pulse-dot rounded-full bg-cyan-200" />
               Cendrai Agent · respondiendo
@@ -182,8 +221,7 @@ function ChatMockup() {
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
               transition={{
                 duration: 0.4,
                 delay: msg.delay,
@@ -207,11 +245,9 @@ function ChatMockup() {
           ))}
         </div>
 
-        {/* Footer con métricas */}
+        {/* Footer */}
         <div className="border-t border-border bg-navy-700/30 px-4 py-2.5">
-          <p className="text-center font-mono text-[10px] text-muted">
-            Tiempo medio de respuesta: 1.2s · Resolución sin escalado: 87%
-          </p>
+          <p className="text-center font-mono text-[10px] text-muted">{metrics}</p>
         </div>
       </div>
     </div>

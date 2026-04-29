@@ -9,10 +9,13 @@ export default function Footer() {
           {/* Columna 1: Marca y descripción */}
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 rounded bg-gradient-to-br from-vantax-cold to-vantax-purple flex items-center justify-center font-bold text-sm text-white shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-                V
-              </div>
-              <span className="font-bold tracking-widest text-sm uppercase text-foreground/80">Vantax AI</span>
+              <span className="font-sans text-xl font-semibold tracking-[-0.02em] text-foreground">
+                cendrai
+              </span>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-cyan-200 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-200" />
+              </span>
             </div>
             <p className="text-muted text-sm font-light leading-relaxed max-w-xs">
               La infraestructura inteligente para negocios sin límites. Auditoría y automatización de nivel empresarial.
@@ -55,7 +58,7 @@ export default function Footer() {
         {/* Barra inferior (Copyright y Redes) */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted/60 text-xs font-light">
-            © {new Date().getFullYear()} Vantax AI. Todos los derechos reservados.
+            © {new Date().getFullYear()} Cendrai. Todos los derechos reservados.
           </p>
           
           {/* Iconos sociales minimalistas (SVGs) */}
