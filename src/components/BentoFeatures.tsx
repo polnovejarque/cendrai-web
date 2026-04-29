@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
-import { MousePointerClick, BarChart3, Megaphone, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { MousePointerClick, BarChart3, Megaphone, ArrowRight, CheckCircle2, TrendingUp, Users } from 'lucide-react'
 
 // ── Datos de los agentes ──────────────────────────────────────────────────────
 const agents = [
@@ -48,6 +48,36 @@ const agents = [
       { step: '02', label: 'Generación de copys',        desc: 'Redacta textos adaptados a cada canal y formato.' },
       { step: '03', label: 'Programación multicanal',    desc: 'Agenda publicaciones en Instagram, LinkedIn, TikTok y más.' },
       { step: '04', label: 'Optimización de campañas',   desc: 'Ajusta creatividades y presupuestos según el rendimiento.' },
+    ],
+  },
+  {
+    id: 'luna',
+    name: 'Luna',
+    role: 'Desarrollo de Negocio',
+    icon: TrendingUp,
+    color: 'from-emerald-500 to-teal-600',
+    description:
+      'Apertura de verticales de negocio y estrategias de expansión. Experta en detectar oportunidades corporativas.',
+    pipeline: [
+      { step: '01', label: 'Análisis de mercado',       desc: 'Detecta nuevos nichos y segmentos rentables automáticamente.' },
+      { step: '02', label: 'Prospección estratégica',   desc: 'Identifica y perfila grandes cuentas clave (Key Accounts).' },
+      { step: '03', label: 'Sincronización interna',    desc: 'Se alinea con marketing para empujar estrategias conjuntas.' },
+      { step: '04', label: 'Acercamiento de alto nivel',desc: 'Inicia conversaciones corporativas y precalifica oportunidades.' },
+    ],
+  },
+  {
+    id: 'lucia',
+    name: 'Lucía',
+    role: 'Recursos Humanos',
+    icon: Users,
+    color: 'from-amber-500 to-orange-600',
+    description:
+      'Gestión integral de tu equipo físico. Lucía controla turnos, ausencias y resuelve dudas operativas al instante.',
+    pipeline: [
+      { step: '01', label: 'Control de turnos',         desc: 'Organiza horarios basándose en disponibilidad y demanda.' },
+      { step: '02', label: 'Gestión de ausencias',      desc: 'Tramita bajas, vacaciones y permisos sin fricción.' },
+      { step: '03', label: 'Filtro de consultas',       desc: 'Resuelve el 80% de las dudas frecuentes del staff en segundos.' },
+      { step: '04', label: 'Cierre de nóminas',         desc: 'Centraliza horas extras e incidencias mensuales para la gestoría.' },
     ],
   },
 ]
