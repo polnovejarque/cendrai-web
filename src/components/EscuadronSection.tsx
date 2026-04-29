@@ -18,7 +18,7 @@ const agents = [
     superpowers: [
       { id: 'crm', title: 'Automatiza CRM', desc: 'Leads, seguimientos y cierres sin intervención humana.', icon: <Target size={16} /> },
       { id: 'ops', title: 'Opera 24/7', desc: 'Sin pausas ni vacaciones. Consistencia perfecta.', icon: <Clock size={16} /> },
-      { id: 'decisions', title: 'Toma de Decisiones', desc: 'Evalúa datos en tiempo real y actúa con criterio.', icon: <Brain size={16} /> },
+      { id: 'decisions', title: 'Apoyo en Toma de Decisiones', desc: 'Evalúa datos en tiempo real y presenta opciones con criterio.', icon: <Brain size={16} /> },
       { id: 'comms', title: 'Comunica por ti', desc: 'Emails e informes con el tono de tu marca.', icon: <Megaphone size={16} /> },
     ]
   },
@@ -38,6 +38,8 @@ const agents = [
       { id: 'assets', title: 'Gestión de Activos', desc: 'Categoriza y rota inventarios para evitar fatiga visual.', icon: <Briefcase size={16} /> },
       { id: 'campaigns', title: 'Ejecución de Campañas', desc: 'Lanza promociones con CTAs precisas y timing perfecto.', icon: <Zap size={16} /> },
       { id: 'analytics', title: 'Analítica de Rendimiento', desc: 'Genera reportes de alcance, retención y conversión.', icon: <BarChart3 size={16} /> },
+      { id: 'social', title: 'Instagram / TikTok / Meta', desc: 'Agenda el calendario de creaciones durante meses de forma automática.', icon: <Megaphone size={16} /> },
+      { id: 'dm', title: 'Contestación de DM', desc: 'Responde mensajes directos en redes sociales de forma automática y personalizada.', icon: <Target size={16} /> },
     ]
   },
   {
@@ -53,8 +55,6 @@ const agents = [
     traits: ['Expansiva', 'Perspicaz', 'Conectora', 'Estratégica'],
     superpowers: [
       { id: 'markets', title: 'Apertura de Mercados', desc: 'Capta nuevos segmentos corporativos e internacionales.', icon: <Target size={16} /> },
-      { id: 'pipeline', title: 'Gestión de Pipeline', desc: 'Mueve oportunidades complejas por el embudo de ventas.', icon: <LineChart size={16} /> },
-      { id: 'cross', title: 'Venta Cruzada', desc: 'Identifica oportunidades entre diferentes verticales.', icon: <Briefcase size={16} /> },
       { id: 'sync', title: 'Sincronización', desc: 'Se alinea con marketing para empujar campañas conjuntas.', icon: <Users size={16} /> },
     ]
   },
@@ -73,7 +73,6 @@ const agents = [
       { id: 'billing', title: 'Facturación Auto', desc: 'Recopila y filtra facturas para la gestoría sin errores.', icon: <CheckCircle size={16} /> },
       { id: 'bi', title: 'Reportes BI', desc: 'Cruza APIs para generar Business Intelligence en tiempo real.', icon: <BarChart3 size={16} /> },
       { id: 'alerts', title: 'Alertas Críticas', desc: 'Monitoriza stock y avisa al alcanzar umbrales de riesgo.', icon: <Zap size={16} /> },
-      { id: 'data', title: 'Orquestación', desc: 'Mantiene bases de datos limpias y sin intervención.', icon: <LineChart size={16} /> },
     ]
   },
   {
