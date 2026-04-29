@@ -28,12 +28,11 @@ export default function SoftwareReveal() {
         {/* Heading */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-            Una terminal para <br />
-            <span className="text-cyan-400">dominar la complejidad.</span>
+            Tu propio centro de mando <br />
+            <span className="text-cyan-400">inteligente.</span>
           </h2>
           <p className="text-muted text-lg max-w-2xl mx-auto font-light">
-            Control total sobre tus flujos de trabajo autónomos a través de una
-            interfaz diseñada para la precisión.
+            Construimos una plataforma exclusiva para tu negocio. Conecta tu CRM, WhatsApp y todo tu equipo de agentes autónomos en un panel único.
           </p>
         </div>
 
