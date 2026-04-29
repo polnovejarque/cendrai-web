@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
-import { Target, BarChart3, Users, Zap, Briefcase, Megaphone, CheckCircle, LineChart, Brain, Shield, Clock } from 'lucide-react'
+import { Target, BarChart3, Users, Zap, Briefcase, Megaphone, CheckCircle, Brain, Shield, Clock } from 'lucide-react'
 
 // ── Data: El Escuadrón Completo ───────────────────────────────────────────────
 const agents = [
