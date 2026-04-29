@@ -1,279 +1,345 @@
 import { motion, useScroll, useTransform, type Variants } from 'framer-motion'
 import { useRef } from 'react'
-import { LayoutDashboard, Users, Settings, Search, Bell, Megaphone, TrendingUp, MousePointerClick, BarChart3 } from 'lucide-react'
+import {
+  LayoutDashboard, CalendarDays, Users, CreditCard, ClipboardList,
+  FileText, Settings, LifeBuoy, Megaphone, TrendingUp,
+  MousePointerClick, BarChart3, Search, AlertCircle, Calendar
+} from 'lucide-react'
 
+/* ── Animación del feed de terminal ───────────────────────────────────────── */
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
+  visible: { opacity: 1, transition: { staggerChildren: 0.18 } },
+}
+const lineVariants: Variants = {
+  hidden: { opacity: 0, x: -6 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.35 } },
 }
 
-const itemVariants: Variants = {
-  hidden: { opacity: 0, x: -10 },
-  visible: { opacity: 1, x: 0 }
+/* ── Líneas de actividad (estáticas) ─────────────────────────────────────── */
+const activityItems = [
+  { initials: 'SY', color: 'from-cyan-500 to-blue-500',    title: 'Torneo Interno',   sub: 'Acción de Agente IA (System)',  badge: 'Nuevo' },
+  { initials: 'SY', color: 'from-cyan-500 to-blue-500',    title: 'Reserva Pista 1',  sub: 'Acción de Agente IA (System)',  badge: 'Nuevo' },
+  { initials: 'MF', color: 'from-violet-500 to-indigo-500',title: 'Pago recibido',    sub: '€350 · Pista Central',          badge: '2m'   },
+  { initials: 'SR', color: 'from-emerald-500 to-teal-500', title: 'Nueva cuenta',     sub: 'Club Deportivo Sur',            badge: '18m'  },
+]
+
+/* ── Feed de terminal ──────────────────────────────────────────────────────── */
+const terminalLines = [
+  { tag: '[OK]',   color: 'text-cyan-400',   text: 'Initializing Neural Infrastructure...' },
+  { tag: '[INFO]', color: 'text-slate-400',  text: 'Syncing with Cendrai Core Module...' },
+  { tag: '[WARN]', color: 'text-yellow-400', text: 'High load detected in Sales Agent Node (Rafa)' },
+  { tag: '[SYS]',  color: 'text-blue-400',   text: 'Re-routing logic through Central Hub...' },
+  { tag: '[OK]',   color: 'text-cyan-400',   text: 'Latency optimized: 1.2ms' },
+  { tag: '[INFO]', color: 'text-slate-400',  text: '5 active agents deployed successfully' },
+  { tag: '[INFO]', color: 'text-slate-400',  text: 'Processing incoming leads from Michael Agent...' },
+  { tag: '[OK]',   color: 'text-cyan-400',   text: 'Neural link established.' },
+  { tag: '[OK]',   color: 'text-cyan-400',   text: 'Data encryption: AES-256 enabled.' },
+  { tag: '[SYS]',  color: 'text-blue-400',   text: 'Balancing power across nodes...' },
+]
+
+/* ── SVG mini sparkline ───────────────────────────────────────────────────── */
+function SparkLine() {
+  return (
+    <svg
+      viewBox="0 0 300 80"
+      preserveAspectRatio="none"
+      className="w-full h-full"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#22d3ee" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {/* area */}
+      <path
+        d="M0,80 L0,55 L25,50 L50,58 L75,42 L100,48 L125,35 L150,40 L175,28 L200,32 L225,20 L250,24 L275,15 L300,18 L300,80 Z"
+        fill="url(#sparkFill)"
+      />
+      {/* line */}
+      <path
+        d="M0,55 L25,50 L50,58 L75,42 L100,48 L125,35 L150,40 L175,28 L200,32 L225,20 L250,24 L275,15 L300,18"
+        fill="none"
+        stroke="#22d3ee"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
 }
 
+/* ── SVG donut ───────────────────────────────────────────────────────────── */
+function DonutChart({ pct = 72 }: { pct?: number }) {
+  const r = 40
+  const circ = 2 * Math.PI * r
+  const dash = (pct / 100) * circ
+  return (
+    <div className="relative w-[120px] h-[120px] shrink-0">
+      <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+        <circle cx="50" cy="50" r={r} fill="none" stroke="#1e3a52" strokeWidth="10" />
+        <circle
+          cx="50" cy="50" r={r}
+          fill="none"
+          stroke="#22d3ee"
+          strokeWidth="10"
+          strokeLinecap="round"
+          strokeDasharray={`${dash} ${circ - dash}`}
+          className="drop-shadow-[0_0_8px_rgba(34,211,238,0.7)]"
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-2xl font-bold text-white leading-none">286</span>
+        <span className="text-[10px] text-slate-400 mt-0.5">72% meta</span>
+      </div>
+    </div>
+  )
+}
+
+/* ── Componente principal ─────────────────────────────────────────────────── */
 export default function SoftwareReveal() {
   const containerRef = useRef<HTMLDivElement>(null)
-  
-  // Efecto de scroll para la rotación 3D
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ['start end', 'end start'],
   })
-
   const rotateX = useTransform(scrollYProgress, [0, 0.4], [45, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.4], [0.8, 1])
+  const scale   = useTransform(scrollYProgress, [0, 0.4], [0.8, 1])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
 
   return (
-    <section ref={containerRef} id="plataforma" className="relative min-h-[120vh] flex items-center justify-center py-24 overflow-hidden">
-      
-      {/* Luces de ambiente Cendrai detrás del software */}
+    <section
+      ref={containerRef}
+      id="plataforma"
+      className="relative min-h-[120vh] flex items-center justify-center py-24 overflow-hidden"
+    >
+      {/* Ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[500px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
 
-      <motion.div 
-        style={{ 
-          rotateX, 
-          scale, 
-          opacity,
-          perspective: "1000px" 
-        }}
+      <motion.div
+        style={{ rotateX, scale, opacity, perspective: '1000px' }}
         className="relative z-10 w-full max-w-[1100px] px-6"
       >
-        <div className="flex flex-col gap-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-              Una terminal para <br/>
-              <span className="text-cyan-400">dominar la complejidad.</span>
-            </h2>
-            <p className="text-muted text-lg max-w-2xl mx-auto font-light">
-              Control total sobre tus flujos de trabajo autónomos a través de una interfaz diseñada para la precisión.
-            </p>
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
+            Una terminal para <br />
+            <span className="text-cyan-400">dominar la complejidad.</span>
+          </h2>
+          <p className="text-muted text-lg max-w-2xl mx-auto font-light">
+            Control total sobre tus flujos de trabajo autónomos a través de una
+            interfaz diseñada para la precisión.
+          </p>
+        </div>
+
+        {/* ── Window frame ── */}
+        <div className="bg-[#0d1b2e] border border-white/10 rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.6)] ring-1 ring-white/[0.04]">
+          {/* Traffic lights */}
+          <div className="flex items-center gap-1.5 px-4 py-3 bg-[#0a1525] border-b border-white/[0.06]">
+            <div className="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-red-500 transition-colors" />
+            <div className="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-yellow-400 transition-colors" />
+            <div className="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-emerald-400 transition-colors" />
           </div>
 
-          {/* Marco del Software / Dashboard */}
-          <div className="bg-[#0f1d33] border border-white/10 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/5">
-            
-            {/* Header / Controles de ventana */}
-            <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/5 bg-[#0a1628]">
-               <div className="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-red-500 transition-colors" />
-               <div className="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-yellow-500 transition-colors" />
-               <div className="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-green-500 transition-colors" />
-            </div>
+          {/* App Shell */}
+          <div className="flex h-[560px] overflow-hidden">
 
-            {/* Dashboard App Shell */}
-            <div className="flex flex-col md:flex-row h-[550px] bg-[#0a1628]">
-              
-              {/* Sidebar */}
-              <div className="w-full md:w-64 shrink-0 border-b md:border-b-0 md:border-r border-white/5 bg-[#0f1d33] flex flex-col hidden sm:flex">
-                {/* Logo */}
-                <div className="p-5 flex items-center gap-2 border-b border-white/5">
-                  <span className="font-sans text-xl font-semibold tracking-[-0.02em] text-foreground">cendrai</span>
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
-                  </span>
-                </div>
-                
-                {/* Nav Principal */}
-                <div className="p-4 space-y-1 border-b border-white/5">
-                  <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-cyan-500/10 text-cyan-400 text-sm font-medium border border-cyan-500/20 shadow-sm">
-                    <LayoutDashboard size={16} /> Panel de Control
+            {/* ── Sidebar ── */}
+            <aside className="w-[180px] shrink-0 bg-[#0a1525] flex flex-col border-r border-white/[0.06] hidden sm:flex">
+              {/* Logo */}
+              <div className="flex items-center gap-1.5 px-4 py-4 border-b border-white/[0.06]">
+                <span className="font-sans text-base font-semibold tracking-[-0.02em] text-white">cendrai</span>
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-400" />
+                </span>
+              </div>
+
+              {/* Main nav */}
+              <nav className="flex-1 overflow-y-auto py-3 space-y-0.5 px-2">
+                {[
+                  { icon: LayoutDashboard, label: 'Dashboard',   active: true  },
+                  { icon: CalendarDays,    label: 'Agenda',       active: false },
+                  { icon: Users,           label: 'Cuentas',      active: false },
+                  { icon: CreditCard,      label: 'Pagos',        active: false },
+                  { icon: ClipboardList,   label: 'Asistencias',  active: false },
+                  { icon: FileText,        label: 'Facturación',  active: false },
+                ].map(({ icon: Icon, label, active }) => (
+                  <div
+                    key={label}
+                    className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[12px] font-medium cursor-default transition-colors ${
+                      active
+                        ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/20'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+                    }`}
+                  >
+                    <Icon size={14} className="shrink-0" />
+                    {label}
                   </div>
-                  <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-colors text-sm font-medium">
-                    <Users size={16} /> Base de Clientes
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-colors text-sm font-medium">
-                    <Settings size={16} /> Configuración
-                  </div>
-                </div>
+                ))}
 
                 {/* Agentes IA */}
-                <div className="p-4 flex-1 overflow-y-auto custom-scrollbar">
-                  <p className="px-3 text-[10px] font-bold tracking-[0.15em] text-slate-500 uppercase mb-3">Escuadrón Activo</p>
-                  <div className="space-y-1">
-                    {/* Michael */}
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/[0.03] transition-colors cursor-default border border-transparent hover:border-white/5">
-                      <Megaphone size={16} className="text-slate-400 shrink-0" />
+                <div className="pt-4 pb-1 px-1">
+                  <p className="text-[9px] font-bold tracking-[0.15em] text-slate-500 uppercase mb-2">Agentes IA</p>
+                  {[
+                    { icon: Megaphone,        label: 'Michael', sub: 'Marketing & RRSS'       },
+                    { icon: TrendingUp,       label: 'Luna',    sub: 'Desarrollo de Negocio'  },
+                    { icon: MousePointerClick,label: 'Rafa',    sub: 'Ventas B2B'              },
+                    { icon: Users,            label: 'Lucía',   sub: 'Recursos Humanos'        },
+                    { icon: BarChart3,        label: 'Carol',   sub: 'Finanzas & Analítica'    },
+                  ].map(({ icon: Icon, label, sub }) => (
+                    <div
+                      key={label}
+                      className="flex items-center gap-2 px-2.5 py-2 rounded-lg text-[11px] cursor-default hover:bg-white/[0.03] transition-colors"
+                    >
+                      <Icon size={13} className="text-slate-500 shrink-0" />
                       <div>
-                        <div className="text-[13px] font-semibold text-slate-200 leading-none">Michael</div>
-                        <div className="text-[9px] text-slate-500 mt-1 uppercase tracking-wider font-medium">Marketing & RRSS</div>
+                        <div className="font-semibold text-slate-300 leading-none">{label}</div>
+                        <div className="text-[9px] text-slate-500 mt-0.5 uppercase tracking-wide">{sub}</div>
                       </div>
                     </div>
-                    {/* Luna */}
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/[0.03] transition-colors cursor-default border border-transparent hover:border-white/5">
-                      <TrendingUp size={16} className="text-slate-400 shrink-0" />
-                      <div>
-                        <div className="text-[13px] font-semibold text-slate-200 leading-none">Luna</div>
-                        <div className="text-[9px] text-slate-500 mt-1 uppercase tracking-wider font-medium">Desarrollo Negocio</div>
-                      </div>
-                    </div>
-                    {/* Rafa */}
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/[0.03] transition-colors cursor-default border border-transparent hover:border-white/5">
-                      <MousePointerClick size={16} className="text-slate-400 shrink-0" />
-                      <div>
-                        <div className="text-[13px] font-semibold text-slate-200 leading-none">Rafa</div>
-                        <div className="text-[9px] text-slate-500 mt-1 uppercase tracking-wider font-medium">Ventas B2B</div>
-                      </div>
-                    </div>
-                    {/* Lucía */}
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/[0.03] transition-colors cursor-default border border-transparent hover:border-white/5">
-                      <Users size={16} className="text-slate-400 shrink-0" />
-                      <div>
-                        <div className="text-[13px] font-semibold text-slate-200 leading-none">Lucía</div>
-                        <div className="text-[9px] text-slate-500 mt-1 uppercase tracking-wider font-medium">Recursos Humanos</div>
-                      </div>
-                    </div>
-                    {/* Carol */}
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/[0.03] transition-colors cursor-default border border-transparent hover:border-white/5">
-                      <BarChart3 size={16} className="text-slate-400 shrink-0" />
-                      <div>
-                        <div className="text-[13px] font-semibold text-slate-200 leading-none">Carol</div>
-                        <div className="text-[9px] text-slate-500 mt-1 uppercase tracking-wider font-medium">Finanzas & Analítica</div>
-                      </div>
-                    </div>
+                  ))}
+                </div>
+              </nav>
+
+              {/* Bottom nav */}
+              <div className="border-t border-white/[0.06] py-3 px-2 space-y-0.5">
+                {[
+                  { icon: Settings, label: 'Configuración' },
+                  { icon: LifeBuoy, label: 'Soporte'       },
+                ].map(({ icon: Icon, label }) => (
+                  <div
+                    key={label}
+                    className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[12px] font-medium text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] transition-colors cursor-default"
+                  >
+                    <Icon size={14} />
+                    {label}
+                  </div>
+                ))}
+              </div>
+            </aside>
+
+            {/* ── Main area ── */}
+            <div className="flex-1 flex flex-col min-w-0 bg-[#0d1b2e]">
+
+              {/* Topbar */}
+              <div className="h-14 shrink-0 flex items-center justify-between px-5 border-b border-white/[0.06] bg-[#0a1525]/40">
+                <div className="flex items-center gap-2 bg-[#0a1525] border border-white/[0.07] rounded-lg px-3 py-1.5 w-52 shadow-inner">
+                  <Search size={13} className="text-slate-500" />
+                  <span className="text-xs text-slate-500">Buscar...</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-slate-400 font-medium">Admin</span>
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-[11px] font-bold text-white shadow ring-1 ring-white/10">
+                    AD
                   </div>
                 </div>
               </div>
 
-              {/* Main Content Area */}
-              <div className="flex-1 flex flex-col bg-[#0a1628] min-w-0">
-                {/* Topbar */}
-                <div className="h-16 border-b border-white/5 flex items-center justify-between px-6 bg-[#0f1d33]/50">
-                  <div className="flex items-center gap-2 text-slate-400 bg-[#0a1628] px-3 py-2 rounded-lg border border-white/5 w-64 shadow-inner">
-                    <Search size={14} />
-                    <span className="text-xs">Buscar flujos de trabajo...</span>
+              {/* 2×2 content grid */}
+              <div className="flex-1 overflow-hidden p-4 grid grid-rows-2 grid-cols-2 gap-3">
+
+                {/* ── Card 1: Ingresos ── */}
+                <div className="row-span-1 col-span-1 bg-[#0f2033] border border-white/[0.06] rounded-xl flex flex-col overflow-hidden">
+                  <div className="px-5 pt-4 pb-2">
+                    <p className="text-[9px] font-bold tracking-[0.18em] text-slate-400 uppercase">Ingresos Mensuales</p>
+                    <h3 className="text-[28px] font-bold text-white tracking-tight leading-tight mt-1">€24.850</h3>
+                    <span className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/20 text-cyan-400 text-[10px] font-medium">
+                      <TrendingUp size={10} /> +12.5% vs mes anterior
+                    </span>
                   </div>
-                  <div className="flex items-center gap-5">
-                    <div className="relative cursor-pointer">
-                      <Bell size={18} className="text-slate-400 hover:text-slate-200" />
-                      <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-cyan-400 rounded-full border border-[#0f1d33]"></span>
-                    </div>
-                    <div className="flex items-center gap-2 cursor-pointer">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 shadow-md flex items-center justify-center text-xs font-bold text-white border border-cyan-200/20">
-                        JS
-                      </div>
-                    </div>
+                  <div className="flex-1 min-h-0">
+                    <SparkLine />
                   </div>
                 </div>
 
-                {/* Dashboard Inner Grid */}
-                <div className="flex-1 p-6 overflow-y-auto custom-scrollbar flex flex-col gap-6">
-                  
-                  {/* Top KPIs */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Tarjeta 1: Ingresos */}
-                    <div className="p-5 rounded-2xl border border-white/5 bg-[#0f1d33] relative overflow-hidden group shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
-                      <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase mb-1">Ingresos Mensuales</p>
-                      <h3 className="text-3xl font-bold text-slate-100 tracking-tight">€24.850</h3>
-                      <p className="text-[11px] text-cyan-400 mt-2 font-medium flex items-center gap-1 bg-cyan-400/10 w-max px-2 py-0.5 rounded">
-                        <TrendingUp size={12} /> +12.5% vs mes anterior
-                      </p>
-                      
-                      {/* SVG Line Chart Background */}
-                      <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none opacity-60">
-                        <svg viewBox="0 0 100 30" preserveAspectRatio="none" className="w-full h-full">
-                          <defs>
-                            <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.2" />
-                              <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
-                            </linearGradient>
-                          </defs>
-                          <path d="M0,30 L0,20 L20,25 L40,10 L60,15 L80,5 L100,8 L100,30 Z" fill="url(#chartGradient)" />
-                          <path d="M0,20 L20,25 L40,10 L60,15 L80,5 L100,8" fill="none" stroke="#22d3ee" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                {/* ── Card 2: Cuentas activas ── */}
+                <div className="row-span-1 col-span-1 bg-[#0f2033] border border-white/[0.06] rounded-xl flex flex-col items-start justify-between p-5">
+                  <p className="text-[9px] font-bold tracking-[0.18em] text-slate-400 uppercase">Cuentas Activas</p>
+                  <div className="flex items-center justify-between w-full mt-2">
+                    <div>
+                      <p className="text-cyan-400 text-xs font-semibold mt-2">Meta Mensual: 395</p>
+                      <p className="text-emerald-400 text-[10px] mt-1 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 w-max">+15 esta semana</p>
+                    </div>
+                    <DonutChart pct={72} />
+                  </div>
+                </div>
+
+                {/* ── Card 3: Próximo evento + Alertas ── */}
+                <div className="row-span-1 col-span-1 bg-[#0f2033] border border-white/[0.06] rounded-xl p-4 flex flex-col gap-3 overflow-hidden">
+                  <div>
+                    <p className="text-[9px] font-bold tracking-[0.18em] text-slate-400 uppercase mb-2">Próximo Evento</p>
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-cyan-500/15 border border-cyan-500/20 flex items-center justify-center shrink-0">
+                        <Calendar size={14} className="text-cyan-400" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-white">Torneo Interno</div>
+                        <div className="text-[10px] text-slate-400">2026-05-03 · Agendado por System</div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* Tarjeta 2: Cuentas */}
-                    <div className="p-5 rounded-2xl border border-white/5 bg-[#0f1d33] flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
-                      <div>
-                        <p className="text-xs font-semibold tracking-wider text-slate-400 uppercase mb-1">Cuentas Activas</p>
-                        <h3 className="text-3xl font-bold text-slate-100 tracking-tight">286</h3>
-                        <p className="text-[11px] text-slate-400 mt-2 font-medium flex items-center gap-1">
-                           <span className="text-emerald-400">+43</span> nuevas esta semana
-                        </p>
+                  <div className="border-t border-white/[0.06] pt-3">
+                    <p className="text-[9px] font-bold tracking-[0.18em] text-slate-400 uppercase mb-2">Alertas Críticas</p>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2">
+                        <AlertCircle size={13} className="text-red-400 mt-0.5 shrink-0" />
+                        <div>
+                          <div className="text-[11px] font-semibold text-red-400">Lucía (HR): Revisión de Asistencias</div>
+                          <div className="text-[10px] text-slate-400">2 empleados exceden las horas permitidas.</div>
+                        </div>
                       </div>
-                      
-                      {/* SVG Donut Chart */}
-                      <div className="w-[72px] h-[72px] relative shrink-0">
-                        <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-                          <path
-                            className="text-slate-800/80"
-                            strokeWidth="4"
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                          <path
-                            className="text-cyan-400"
-                            strokeWidth="4"
-                            strokeDasharray="82, 100"
-                            strokeLinecap="round"
-                            stroke="currentColor"
-                            fill="none"
-                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-xs font-bold text-slate-100">82%</span>
+                      <div className="flex items-start gap-2">
+                        <AlertCircle size={13} className="text-orange-400 mt-0.5 shrink-0" />
+                        <div>
+                          <div className="text-[11px] font-semibold text-orange-400">Luna (Estrategia): GTM</div>
+                          <div className="text-[10px] text-slate-400">El lanzamiento B2B requiere atención.</div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Actividad Reciente (Terminal Feed) */}
-                  <div className="flex-1 rounded-2xl border border-white/5 bg-[#0f1d33] flex flex-col relative overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
-                    <div className="px-5 py-3.5 border-b border-white/5 flex items-center justify-between bg-[#0a1628]/40">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-xs font-semibold tracking-wider text-slate-300 uppercase">Registro de Operaciones</h3>
-                        <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-mono border border-blue-500/20">Kernel Active</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 px-2 py-1 bg-white/5 rounded-md border border-white/5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        <span className="text-[10px] font-medium text-slate-300 uppercase tracking-wider">Live Feed</span>
-                      </div>
-                    </div>
-                    
-                    {/* Terminal Feed Scroll Area */}
-                    <div className="p-5 font-mono text-[12px] flex-1 overflow-hidden relative">
-                      <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
-                        className="flex flex-col gap-2 text-slate-400 leading-relaxed"
-                      >
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-cyan-400 shrink-0">[OK]</span> <span>Initializing Neural Infrastructure...</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-slate-500 shrink-0">[INFO]</span> <span>Syncing with Cendrai Core Module...</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-yellow-400 shrink-0">[WARN]</span> <span>High load detected in Sales Agent Node (Rafa)</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-blue-400 shrink-0">[SYS]</span> <span>Re-routing logic through Central Hub...</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-cyan-400 shrink-0">[OK]</span> <span>Latency optimized: 1.2ms</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-slate-500 shrink-0">[INFO]</span> <span>5 active agents deployed successfully</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-slate-500 shrink-0">[INFO]</span> <span>Monitoring real-time operations...</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-cyan-400 shrink-0">[OK]</span> <span>Neural link established.</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-slate-500 shrink-0">[INFO]</span> <span>Processing incoming leads from Michael Agent...</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-cyan-400 shrink-0">[OK]</span> <span>Data encryption: AES-256 enabled.</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-blue-400 shrink-0">[SYS]</span> <span>Balancing power across nodes...</span></motion.div>
-                        <motion.div variants={itemVariants} className="flex gap-3"><span className="text-cyan-400 shrink-0">[OK]</span> <span>Critical systems normalized.</span></motion.div>
-                      </motion.div>
-                      
-                      {/* Gradient fade out at bottom */}
-                      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0f1d33] to-transparent pointer-events-none" />
-                    </div>
-                  </div>
-                  
                 </div>
+
+                {/* ── Card 4: Actividad Reciente = Terminal Feed ── */}
+                <div className="row-span-1 col-span-1 bg-[#0f2033] border border-white/[0.06] rounded-xl flex flex-col overflow-hidden">
+                  <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06] bg-[#0a1525]/40 shrink-0">
+                    <p className="text-[9px] font-bold tracking-[0.18em] text-slate-400 uppercase">Actividad Reciente</p>
+                    <span className="flex items-center gap-1.5 text-[9px] font-medium text-emerald-400 uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Live
+                    </span>
+                  </div>
+                  <div className="flex-1 p-4 font-mono text-[11px] overflow-hidden relative">
+                    <motion.div
+                      variants={containerVariants}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, margin: '-80px' }}
+                      className="flex flex-col gap-2 text-slate-400"
+                    >
+                      {terminalLines.map((l, i) => (
+                        <motion.div key={i} variants={lineVariants} className="flex gap-2">
+                          <span className={`shrink-0 ${l.color}`}>{l.tag}</span>
+                          <span>{l.text}</span>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                    {/* fade */}
+                    <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0f2033] to-transparent pointer-events-none" />
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Decoración de nodos flotantes sutiles */}
+      {/* Decorative nodes */}
       <div className="absolute top-1/4 right-10 w-24 h-24 border border-cyan-400/10 rounded-full animate-pulse" />
       <div className="absolute bottom-1/4 left-10 w-32 h-32 border border-blue-500/10 rounded-full animate-pulse delay-700" />
     </section>
