@@ -306,7 +306,7 @@ export default function EscuadronSection() {
                         {/* Panel Footer */}
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="border-t border-white/[0.06] px-8 md:px-10 py-5 flex items-center justify-between">
                           <p className="text-[12px] text-slate-500">Despliegue e integración en <span className="text-white font-medium">menos de 48h</span>.</p>
-                          <a href="#demo" className="px-6 py-2.5 rounded-full bg-cyan-400 text-slate-950 text-xs font-bold hover:bg-cyan-300 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+                          <a href="https://calendly.com/pol-novejarque-cendrai" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 rounded-full bg-cyan-400 text-slate-950 text-xs font-bold hover:bg-cyan-300 transition-colors shadow-[0_0_15px_rgba(34,211,238,0.4)]">
                             Asignar Tareas
                           </a>
                         </motion.div>

@@ -121,7 +121,9 @@ export default function HeroSection() {
             className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <a
-              href="#demo"
+              href="https://calendly.com/pol-novejarque-cendrai"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-lg bg-cyan-200 px-7 py-3.5 text-[15px] font-medium text-slate-950 shadow-[0_0_30px_-8px_rgba(34,211,238,0.9)] transition-all hover:bg-cyan-100 hover:shadow-[0_0_50px_-4px_rgba(34,211,238,1)]"
             >
               Solicita Presupuesto
