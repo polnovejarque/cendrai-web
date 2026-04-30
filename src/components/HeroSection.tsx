@@ -130,7 +130,7 @@ export default function HeroSection() {
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
-              href="#how-it-works"
+              href="#que-es-cendrai"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface/40 px-7 py-3.5 text-[15px] font-medium text-foreground backdrop-blur-sm transition-colors hover:border-navy-500 hover:bg-surface"
             >
               ¿Qué es Cendrai?
