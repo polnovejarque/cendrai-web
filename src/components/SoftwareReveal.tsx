@@ -15,7 +15,7 @@ export default function SoftwareReveal() {
   return (
     <section
       ref={containerRef}
-      id="que-es-cendrai"
+      id="software-preview"
       className="relative min-h-[120vh] flex items-center justify-center py-24 overflow-hidden"
     >
       {/* Ambient glow */}
