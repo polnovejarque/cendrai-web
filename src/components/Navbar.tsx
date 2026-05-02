@@ -3,7 +3,7 @@ import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { Menu, X, ArrowRight } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Plataforma', href: '#software-preview' },
+  { label: 'Nuestra plataforma', href: '#software-preview' },
   { label: 'Escuadrón IA', href: '#agentes' },
   { label: 'Casos de uso', href: '#casos' },
   { label: 'Empresa', href: '#empresa' },
