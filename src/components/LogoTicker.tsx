@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion'
 
 const companies = [
-  'ACME CORP',
-  'NEXUS DYNAMICS',
-  'HORIZON LOGISTICS',
-  'QUANTUM LEAP',
-  'VERTEX SOLUTIONS',
-  'SYNAPSE INDUSTRIES'
+  'TEMPUS PÁDEL CLUB',
+  'FITLEADER',
+  'TEMPUS PÁDEL CLUB',
+  'FITLEADER',
+  'TEMPUS PÁDEL CLUB',
+  'FITLEADER'
 ]
 
 export default function LogoTicker() {
