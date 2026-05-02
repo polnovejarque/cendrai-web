@@ -102,7 +102,7 @@ export default function EscuadronSection() {
           <span className="inline-block text-[11px] font-semibold tracking-[0.18em] text-cyan-200 uppercase mb-4">
             Infraestructura Autónoma
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-100 tracking-tight max-w-2xl mx-auto leading-tight mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-100 tracking-tight max-w-2xl mx-auto leading-tight mb-6">
             Conoce a tu Escuadrón.
           </h2>
           <p className="mt-4 text-base text-slate-400 max-w-xl mx-auto leading-relaxed">
@@ -149,7 +149,7 @@ export default function EscuadronSection() {
                     <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 text-cyan-400">
                       {agent.role}
                     </p>
-                    <h3 className="text-2xl font-bold tracking-tight text-white">
+                    <h3 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
                       {agent.name}
                     </h3>
                   </div>
@@ -239,7 +239,7 @@ function AgentDetailsPanel({ agent }: { agent: typeof agents[0] }) {
       animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
       exit={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="w-full bg-[#0B1120] border border-slate-800 rounded-[2rem] p-8 lg:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col h-full overflow-hidden relative"
+      className="w-full bg-[#0B1120] border border-slate-800 rounded-[2rem] p-6 lg:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col h-full overflow-hidden relative"
     >
       {/* Resplandor superior sutil */}
       <div className="absolute inset-x-0 top-0 h-40 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(6,182,212,0.1) 0%, transparent 70%)' }} />

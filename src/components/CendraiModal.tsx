@@ -71,7 +71,6 @@ export default function CendraiModal({ isOpen, onClose }: CendraiModalProps) {
           aria-modal="true"
           role="dialog"
         >
-          {/* Card — stopPropagation para que clicks internos no cierren */}
           <motion.div
             key="modal-card"
             variants={cardVariants}
@@ -79,7 +78,7 @@ export default function CendraiModal({ isOpen, onClose }: CendraiModalProps) {
             animate="visible"
             exit="exit"
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-slate-900/95 border border-slate-800 rounded-3xl shadow-[0_32px_80px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
+            className="relative w-[90%] md:w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-slate-900/95 border border-slate-800 rounded-3xl shadow-[0_32px_80px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
           >
             {/* Top glow line */}
             <div

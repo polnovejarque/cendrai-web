@@ -43,9 +43,9 @@ export default function LogoTicker() {
               {[...companies, ...companies].map((company, index) => (
                 <div 
                   key={index} 
-                  className="px-12 flex items-center justify-center group cursor-default"
+                  className="px-6 md:px-12 flex items-center justify-center group cursor-default"
                 >
-                  <span className="text-slate-500 font-bold text-xl uppercase tracking-widest transition-colors duration-300 group-hover:text-cyan-400">
+                  <span className="text-slate-500 font-bold text-base md:text-xl uppercase tracking-widest transition-colors duration-300 group-hover:text-cyan-400">
                     {company}
                   </span>
                 </div>

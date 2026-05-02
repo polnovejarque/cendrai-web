@@ -100,7 +100,7 @@ export default function BentoFeatures() {
 
           {/* ── Columna izquierda: Navegación ── */}
           <motion.div
-            className="flex flex-col gap-2"
+            className="flex flex-col"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -111,20 +111,21 @@ export default function BentoFeatures() {
               Capacidades
             </p>
 
-            {infrastructure.map((item) => {
-              const Icon = item.icon
-              const isActive = item.id === activeId
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveId(item.id)}
-                  className={[
-                    'group relative w-full flex items-center gap-4 px-5 py-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer select-none',
-                    isActive
-                      ? 'bg-cyan-400/10 border-cyan-400/30 shadow-[0_4px_24px_rgba(34,211,238,0.08)]'
-                      : 'bg-slate-900/40 border-white/[0.08] hover:border-white/20 hover:bg-slate-800/30',
-                  ].join(' ')}
-                >
+            <div className="flex flex-row lg:flex-col gap-3 lg:gap-2 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide snap-x">
+              {infrastructure.map((item) => {
+                const Icon = item.icon
+                const isActive = item.id === activeId
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveId(item.id)}
+                    className={[
+                      'group relative shrink-0 snap-start w-64 lg:w-full flex items-center gap-4 px-5 py-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer select-none',
+                      isActive
+                        ? 'bg-cyan-400/10 border-cyan-400/30 shadow-[0_4px_24px_rgba(34,211,238,0.08)]'
+                        : 'bg-slate-900/40 border-white/[0.08] hover:border-white/20 hover:bg-slate-800/30',
+                    ].join(' ')}
+                  >
                   {/* Active indicator */}
                   {isActive && (
                     <motion.div
@@ -163,6 +164,7 @@ export default function BentoFeatures() {
                 </button>
               )
             })}
+            </div>
 
             {/* CTA inferior */}
             <a
