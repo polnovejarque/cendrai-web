@@ -1,7 +1,6 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { motion, useInView, type Variants } from 'framer-motion'
 import { ArrowRight, CheckCheck } from 'lucide-react'
-import CendraiModal from './CendraiModal'
 
 // ── Coreografía maestra ──
 const container: Variants = {
@@ -47,9 +46,7 @@ const padelMessages: Msg[] = [
 
 // ── Section ────────────────────────────────────────────────────────────────────
 
-export default function HeroSection() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
+export default function HeroSection({ onOpenModal }: { onOpenModal?: () => void }) {
   return (
     <>
       <section className="relative isolate overflow-hidden">
@@ -134,7 +131,7 @@ export default function HeroSection() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </a>
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={onOpenModal}
                 className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface/40 px-7 py-3.5 text-[15px] font-medium text-foreground backdrop-blur-sm transition-colors hover:border-navy-500 hover:bg-surface"
               >
                 ¿Qué es Cendrai?
@@ -184,9 +181,6 @@ export default function HeroSection() {
         {/* Bottom fade */}
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-slate-950" />
       </section>
-
-      {/* Modal */}
-      <CendraiModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   )
 }

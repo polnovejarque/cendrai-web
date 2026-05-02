@@ -89,7 +89,7 @@ export default function EscuadronSection() {
   const [activeIndex, setActiveIndex] = useState(0)
 
   return (
-    <section id="agentes" className="bg-background relative py-24 lg:py-32">
+    <section id="escuadron" className="bg-background relative py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <motion.div

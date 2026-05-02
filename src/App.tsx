@@ -1,14 +1,19 @@
+import { useState } from 'react'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
 import SoftwareReveal from './components/SoftwareReveal'
 import BentoFeatures from './components/BentoFeatures'
 import EscuadronSection from './components/EscuadronSection'
+import LogoTicker from './components/LogoTicker'
 import UseCases from './components/UseCases'
 import SocialProof from './components/SocialProof'
 import CtaFinal from './components/CtaFinal'
 import Footer from './components/Footer'
+import CendraiModal from './components/CendraiModal'
 
 export default function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   return (
     <main className="relative bg-slate-950 min-h-screen text-slate-200">
       {/* Global background layers */}
@@ -17,11 +22,13 @@ export default function App() {
       
       {/* Content */}
       <div className="relative z-10">
-        <Navbar />
-        <HeroSection />
+        <Navbar onOpenModal={() => setIsModalOpen(true)} />
+        <HeroSection onOpenModal={() => setIsModalOpen(true)} />
         <SoftwareReveal />
         <BentoFeatures />
         
+        <LogoTicker />
+
         {/* Tu equipo estrella en el centro de la atención */}
         <EscuadronSection />
         
@@ -32,6 +39,8 @@ export default function App() {
         {/* El cierre elegante */}
         <Footer />
       </div>
+
+      <CendraiModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </main>
   )
 }

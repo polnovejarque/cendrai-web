@@ -3,9 +3,9 @@ import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { Menu, X, ArrowRight } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Nuestra plataforma', href: '#software-preview' },
-  { label: 'Escuadrón IA', href: '#agentes' },
-  { label: 'Casos de uso', href: '#casos' },
+  { label: 'Nuestra plataforma', href: '#plataforma' },
+  { label: 'Escuadrón IA', href: '#escuadron' },
+  { label: 'Casos de uso', href: '#casos-uso' },
   { label: 'Empresa', href: '#empresa' },
 ]
 
@@ -27,7 +27,7 @@ const mobileMenuVariants: Variants = {
   },
 }
 
-export default function Navbar() {
+export default function Navbar({ onOpenModal }: { onOpenModal?: () => void }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -77,6 +77,12 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
+                onClick={(e) => {
+                  if (link.label === 'Empresa' && onOpenModal) {
+                    e.preventDefault()
+                    onOpenModal()
+                  }
+                }}
                 className="group relative rounded-md px-3 py-2 text-[13px] font-medium text-muted transition-colors duration-200 hover:text-foreground"
               >
                 {link.label}
@@ -129,7 +135,13 @@ export default function Navbar() {
                   <motion.a
                     key={link.href}
                     href={link.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => {
+                      setMobileOpen(false)
+                      if (link.label === 'Empresa' && onOpenModal) {
+                        e.preventDefault()
+                        onOpenModal()
+                      }
+                    }}
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.05 + i * 0.04, duration: 0.3 }}
