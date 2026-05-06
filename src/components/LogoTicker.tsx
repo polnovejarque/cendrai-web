@@ -3,10 +3,13 @@ import { motion } from 'framer-motion'
 const companies = [
   'TEMPUS PÁDEL CLUB',
   'FITLEADER',
+  'ROMAN PIZZA',
   'TEMPUS PÁDEL CLUB',
   'FITLEADER',
+  'ROMAN PIZZA',
   'TEMPUS PÁDEL CLUB',
-  'FITLEADER'
+  'FITLEADER',
+  'ROMAN PIZZA'
 ]
 
 export default function LogoTicker() {

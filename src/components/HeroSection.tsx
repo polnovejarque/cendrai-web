@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { motion, useInView, type Variants } from 'framer-motion'
 import { ArrowRight, CheckCheck } from 'lucide-react'
 
@@ -46,7 +46,20 @@ const padelMessages: Msg[] = [
 
 // ── Section ────────────────────────────────────────────────────────────────────
 
+// Fecha de inicio: noviembre 2025 (para que mayo 2026 = 6 meses)
+const START_YEAR = 2025
+const START_MONTH = 11 // noviembre
+
 export default function HeroSection({ onOpenModal }: { onOpenModal?: () => void }) {
+  const months = useMemo(() => {
+    const now = new Date()
+    // diff en meses completos desde la fecha de inicio
+    return (
+      (now.getFullYear() - START_YEAR) * 12 +
+      (now.getMonth() + 1 - START_MONTH)
+    )
+  }, [])
+
   return (
     <>
       <section className="relative isolate overflow-hidden">
@@ -75,7 +88,7 @@ export default function HeroSection({ onOpenModal }: { onOpenModal?: () => void 
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-200" />
                 </span>
                 <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-                  18 meses en producción · probado en negocios reales
+                  {months} meses en producción · probado en negocios reales
                 </span>
               </div>
             </motion.div>
