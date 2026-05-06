@@ -45,7 +45,7 @@ export default function CtaFinal() {
         {/* ── BOTÓN MAGNÉTICO → Calendly ── */}
         <motion.a
           ref={buttonRef}
-          href="https://calendly.com/pol-novejarque-cendrai"
+          href="https://calendly.com/cendrai"
           target="_blank"
           rel="noopener noreferrer"
           onMouseMove={handleMouseMove}

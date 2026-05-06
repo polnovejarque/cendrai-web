@@ -93,7 +93,7 @@ export default function Navbar({ onOpenModal }: { onOpenModal?: () => void }) {
 
           <div className="hidden md:flex items-center gap-3">
             <a
-              href="https://calendly.com/pol-novejarque-cendrai"
+              href="https://calendly.com/cendrai"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-1.5 rounded-lg bg-cyan-200 px-4 py-2 text-[13px] font-medium text-slate-950 transition-all duration-200 hover:bg-cyan-100 hover:shadow-[0_0_24px_-4px_rgba(34,211,238,0.9)]"
@@ -154,7 +154,7 @@ export default function Navbar({ onOpenModal }: { onOpenModal?: () => void }) {
 
               <div className="mt-6 border-t border-border pt-6">
                 <a
-                  href="https://calendly.com/pol-novejarque-cendrai"
+                  href="https://calendly.com/cendrai"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setMobileOpen(false)}

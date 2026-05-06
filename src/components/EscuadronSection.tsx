@@ -273,7 +273,7 @@ function AgentDetailsPanel({ agent }: { agent: typeof agents[0] }) {
 
       <div className="relative mt-auto pt-6 border-t border-white/[0.06] flex flex-col xl:flex-row items-center justify-between gap-6 shrink-0">
         <a 
-          href="https://calendly.com/pol-novejarque-cendrai" 
+          href="https://calendly.com/cendrai" 
           target="_blank" 
           rel="noopener noreferrer" 
           className="w-full px-8 py-3.5 rounded-xl bg-cyan-400 text-slate-950 text-[14px] font-bold hover:bg-cyan-300 transition-colors shadow-[0_0_20px_rgba(34,211,238,0.4)] flex items-center justify-center gap-2 group"

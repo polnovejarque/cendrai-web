@@ -168,7 +168,7 @@ export default function BentoFeatures() {
 
             {/* CTA inferior */}
             <a
-              href="https://calendly.com/pol-novejarque-cendrai"
+              href="https://calendly.com/cendrai"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3.5 text-[13px] font-semibold text-slate-950 hover:bg-cyan-300 transition-colors shadow-[0_0_24px_-4px_rgba(34,211,238,0.7)]"
